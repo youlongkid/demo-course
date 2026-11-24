@@ -1,463 +1,765 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>草台班子</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            dark: '#08080c',
-            purePurple: '#8b5cf6',
-            appleGreen: '#84cc16',
-            cardBg: '#12121b',
-            softBlue: '#22d3ee',
-            softGold: '#fbbf24',
-          },
-          fontFamily: {
-            sans: ['system-ui', 'sans-serif'],
-            serif: ['Noto Serif SC', 'serif'],
-          },
-        },
-      }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>艺术 IP 系列课 · 网课知识库</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#0d0c12;
+    --paper:#17151f;
+    --paper-2:#1f1c2a;
+    --ink:#ece9f3;
+    --ink-2:#bfb7cc;
+    --ink-3:#827a95;
+    --line:#2a2536;
+    --line-2:#332d40;
+    --accent:#8b5cf6;
+    --accent-soft:#2a1f3d;
+    --green:#84cc16;
+    --green-soft:#212d14;
+    --cyan:#38bdf8;
+    --cyan-soft:#122633;
+    --gold:#f5b85c;
+    --gold-soft:#2d2413;
+    --sidebar:#0a0910;
+    --sidebar-ink:#e8e4f2;
+    --sidebar-ink-2:#8a819e;
+    --shadow:0 8px 28px rgba(0,0,0,.45);
+    --radius:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.75;letter-spacing:.01em;
+    -webkit-font-smoothing:antialiased;font-size:14px;overflow-wrap:break-word;
+  }
+  img,video{max-width:100%;height:auto}
+  a{color:inherit;text-decoration:none}
+  mark{background:#2a1f3d;color:#c4b5fd;border-radius:3px;padding:0 2px}
+  /* ===== 顶部栏（移动端） ===== */
+  .topbar{
+    position:sticky;top:0;z-index:40;display:none;
+    background:var(--sidebar);color:var(--sidebar-ink);
+    padding:12px 16px;align-items:center;gap:12px;
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .burger{
+    width:38px;height:38px;border:1px solid var(--line-2);border-radius:10px;
+    background:transparent;color:var(--sidebar-ink);font-size:18px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:.25s;
+  }
+  .topbar .burger:hover{border-color:var(--accent);color:var(--accent)}
+  .topbar .tt{font-family:"Noto Serif SC",serif;font-weight:700;font-size:16px;flex:1}
+  .m-switch{display:flex;background:#1c1926;border-radius:10px;padding:3px;gap:3px}
+  .m-switch button{border:0;background:transparent;color:var(--sidebar-ink-2);font-family:inherit;font-size:12.5px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:.25s;white-space:nowrap}
+  .m-switch button.active{background:#2a2438;color:#fff;font-weight:600}
+  /* ===== 布局 ===== */
+  .layout{display:grid;grid-template-columns:296px 1fr;max-width:1280px;margin:0 auto}
+  /* ===== 侧边目录 ===== */
+  aside.sidebar{
+    position:sticky;top:0;height:100vh;overflow-y:auto;
+    background:var(--sidebar);color:var(--sidebar-ink);
+    padding:28px 20px 40px;scrollbar-width:thin;
+  }
+  .brand{margin-bottom:22px}
+  .brand .kicker{font-size:11px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase}
+  .brand h1{font-family:"Noto Serif SC",serif;font-weight:900;font-size:18px;line-height:1.4;margin-top:6px}
+  .brand p{font-size:12px;color:var(--sidebar-ink-2);margin-top:6px;line-height:1.6}
+  .search{position:relative;margin-bottom:22px}
+  .search input{
+    width:100%;background:#1c1926;border:1px solid var(--line-2);border-radius:11px;
+    color:var(--sidebar-ink);padding:10px 12px 10px 36px;font-size:13px;font-family:inherit;outline:none;transition:.25s;
+  }
+  .search input::placeholder{color:var(--sidebar-ink-2)}
+  .search input:focus{border-color:var(--accent);background:#221d30;box-shadow:0 0 0 3px rgba(139,92,246,.18)}
+  .search .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--sidebar-ink-2);font-size:14px}
+  .search .clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--sidebar-ink-2);cursor:pointer;font-size:14px;display:none}
+  .toc-group{margin-bottom:18px}
+  .toc-group > .toc-title{
+    display:flex;align-items:center;gap:8px;padding:0 10px;margin-bottom:8px;
+  }
+  .toc-badge{font-size:10.5px;letter-spacing:.08em;color:#fff;background:var(--accent);border-radius:6px;padding:2px 8px;font-weight:600;flex:none}
+  .toc-cname{font-size:12px;color:var(--sidebar-ink-2);font-weight:500;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .toc-list{display:flex;flex-direction:column;gap:2px;padding-left:4px}
+  .toc-list a{
+    display:flex;gap:8px;align-items:baseline;font-size:13px;color:var(--sidebar-ink);
+    padding:7px 10px;border-radius:9px;border-left:2px solid transparent;line-height:1.5;
+    transition:background .25s ease,color .25s ease,border-color .25s ease;
+  }
+  .toc-list a:hover{background:#1c1926}
+  .toc-list a.active{background:var(--accent-soft);border-left-color:var(--accent);color:#fff;font-weight:600}
+  .toc-list a.active .no{color:var(--accent)}
+  .toc-list a .no{color:var(--sidebar-ink-2);font-size:11.5px;min-width:22px;transition:color .25s}
+  /* ---------- 未解锁目录 ---------- */
+  .toc-badge-locked{background:var(--green-soft);color:var(--green)}
+  .toc-list a.locked{color:var(--sidebar-ink-2);cursor:not-allowed;gap:7px;border-left-color:transparent}
+  .toc-list a.locked:hover{background:#17151f}
+  .toc-list a.locked .lock-ic{opacity:.65;flex:none;display:flex;align-items:center}
+  .toc-list a.locked .lock-ic svg{width:12px;height:12px}
+  .toc-list a.locked .lk-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .toc-list a.locked .lock-tag{
+    font-size:9.5px;color:var(--ink-3);background:#24212e;border-radius:5px;padding:1px 6px;flex:none;letter-spacing:.04em;
+  }
+  .toc-list a.locked .lock-tag.flash{color:var(--green);border:1px solid var(--green);background:var(--green-soft)}
+  .toc-group.toc-locked-group{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line)}
+  @keyframes denied{
+    0%{transform:translateX(0)}
+    18%{transform:translateX(8px)}
+    38%{transform:translateX(-7px)}
+    58%{transform:translateX(5px)}
+    78%{transform:translateX(-3px)}
+    100%{transform:translateX(0)}
+  }
+  .denied{animation:denied .45s ease}
+  /* ---------- 限时免费小徽章 ---------- */
+  .toc-promo{
+    flex:none;font-size:9.5px;letter-spacing:.05em;color:var(--green);background:var(--green-soft);
+    border:1px solid rgba(132,204,22,.28);border-radius:5px;padding:1px 7px;font-weight:600;
+  }
+  .head-promo{
+    font-size:11px;letter-spacing:.05em;color:var(--green);background:var(--green-soft);
+    border:1px solid rgba(132,204,22,.28);border-radius:7px;padding:3px 10px;font-weight:600;align-self:center;
+  }
+  /* ---------- 底部后续课程 · 锁头收尾 ---------- */
+  .locked-block{
+    background:linear-gradient(160deg,#0a0a10 0%,#0d1018 50%,#111624 100%);
+    border:1px solid var(--line);color:#ece9f3;
+    border-radius:20px;padding:40px 30px;margin-top:30px;position:relative;overflow:hidden;text-align:center;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  .locked-block::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+    background:radial-gradient(120% 90% at 85% 0%,rgba(80,110,190,.10),transparent 55%),
+               radial-gradient(120% 90% at 10% 100%,rgba(80,110,190,.06),transparent 55%);
+  }
+  .lock-head{display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center;position:relative;z-index:1}
+  .lock-badge{
+    flex:none;width:52px;height:52px;border-radius:50%;
+    background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.22);
+    color:#c4b5fd;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 6px rgba(139,92,246,.05), inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .lock-badge svg{width:22px;height:22px}
+  .lock-head-text{display:flex;flex-direction:column;gap:6px;align-items:center}
+  .lock-kicker{font-size:10px;letter-spacing:.32em;color:var(--ink-3);text-transform:uppercase}
+  .lock-head-text h3{font-family:"Noto Serif SC",serif;font-size:clamp(18px,2.2vw,20px);font-weight:700;line-height:1.45;color:var(--ink);letter-spacing:.04em}
+  .brand-sub{font-size:12px;color:var(--sidebar-ink-2);font-weight:400;letter-spacing:.06em}
+  .side-switch{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);display:flex;background:#1c1926;border-radius:11px;padding:4px;gap:4px}
+  .side-switch button{flex:1;border:0;background:transparent;color:var(--sidebar-ink-2);font-family:inherit;font-size:13px;cursor:pointer;padding:8px 0;border-radius:8px;transition:.25s}
+  .side-switch button.active{background:#2a2438;color:#fff;font-weight:600}
+  .overlay{display:none}
+  /* ===== 正文 ===== */
+  main{padding:0 40px 90px;min-width:0;max-width:860px}
+  .hero{padding:52px 0 30px;border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(700px 240px at 85% 0%, rgba(139,92,246,.15), transparent 60%),
+      radial-gradient(600px 220px at 10% 20%, rgba(132,204,22,.12), transparent 55%);
+  }
+  .hero .tag{display:inline-block;font-size:12px;letter-spacing:.25em;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:4px 14px;margin-bottom:18px}
+  .hero h2{font-family:"Noto Serif SC",serif;font-weight:900;font-size:clamp(22px,3vw,28px);line-height:1.35}
+  .hero h2 em{font-style:normal;color:var(--accent)}
+  .hero p{margin-top:12px;color:var(--ink-2);font-size:13.5px;max-width:680px;line-height:1.7}
+  .hero .stats{display:flex;gap:26px;margin-top:20px;flex-wrap:wrap}
+  .hero .stats div{font-size:12px;color:var(--ink-3)}
+  .hero .stats b{display:block;font-family:"Noto Serif SC",serif;font-size:19px;color:var(--ink)}
+  /* 课程分隔 */
+  .course-head{margin:38px 0 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .course-head .badge{font-family:"Noto Serif SC",serif;font-weight:900;font-size:13.5px;color:#fff;background:var(--green);border-radius:11px;padding:8px 14px}
+  .course.alt .course-head .badge{background:var(--accent)}
+  .course-head h3{font-family:"Noto Serif SC",serif;font-size:clamp(19px,2.2vw,22px);font-weight:700;color:var(--ink)}
+  .course-head p{color:var(--ink-3);font-size:12.5px;width:100%;margin-top:4px}
+  /* 模块卡片 */
+  section.module{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px 30px 26px;margin-bottom:22px;box-shadow:var(--shadow);scroll-margin-top:76px;
+    transition:border-color .25s ease,transform .25s ease,box-shadow .25s ease,opacity .25s ease;
+  }
+  section.module:hover{border-color:var(--line-2)}
+  .fade-up{animation:fadeUp .35s ease both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  /* 丝滑入场 */
+  section.module.reveal{opacity:0;transform:translateY(16px)}
+  section.module.reveal.in{animation:revealIn .55s cubic-bezier(.22,.61,.36,1) both}
+  @keyframes revealIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .module-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+  .num{
+    flex:none;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    font-family:"Noto Serif SC",serif;font-weight:900;font-size:17px;color:#fff;background:var(--accent);
+  }
+  .course.alt .num{background:var(--green)}
+  .module-head .tt{flex:1;min-width:0}
+  .module-head h4{font-family:"Noto Serif SC",serif;font-size:clamp(16.5px,2vw,18px);font-weight:700;line-height:1.45;color:var(--ink)}
+  .kn{margin-top:9px;display:flex;gap:8px;flex-wrap:wrap}
+  .kn span{font-size:12px;color:var(--ink-3);background:var(--paper-2);border:1px solid var(--line-2);border-radius:7px;padding:3px 10px}
+  .kn span:nth-child(3n-2){color:#c4b5fd}
+  .kn span:nth-child(3n-1){color:#7dd3fc}
+  .kn span:nth-child(3n){color:#fcd34d}
+  .core{
+    position:relative;font-size:13.5px;color:var(--ink);background:var(--accent-soft);
+    border:1px solid rgba(139,92,246,.22);border-left:3px solid var(--accent);border-radius:0 14px 14px 0;
+    padding:15px 17px;margin:0 0 18px;line-height:1.7;
+  }
+  .core::before{
+    content:"核心结论";display:inline-block;font-size:11px;letter-spacing:.12em;color:#c4b5fd;
+    font-weight:600;margin-bottom:6px;padding:2px 10px;border:1px solid rgba(139,92,246,.3);border-radius:999px;
+  }
+  .points{display:flex;flex-direction:column;gap:14px}
+  .point{
+    --pc:var(--accent);--pc-soft:var(--accent-soft);
+    position:relative;display:flex;gap:14px;background:var(--paper-2);border:1px solid var(--line);
+    border-left:3px solid var(--pc);border-radius:14px;padding:16px 18px;
+    transition:border-color .25s ease,background .25s ease,transform .25s ease,box-shadow .25s ease;
+  }
+  .point:nth-child(4n+2){--pc:var(--cyan);--pc-soft:var(--cyan-soft)}
+  .point:nth-child(4n+3){--pc:var(--gold);--pc-soft:var(--gold-soft)}
+  .point:nth-child(4n){--pc:var(--green);--pc-soft:var(--green-soft)}
+  .point:hover{border-color:var(--line-2);transform:translateY(-2px);box-shadow:var(--shadow)}
+  .point .dot{
+    flex:none;width:26px;height:26px;border-radius:50%;background:var(--pc);color:#fff;
+    font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px;
+  }
+  .point .pt{flex:1;min-width:0}
+  .pt-tag{display:inline-block;font-size:10.5px;letter-spacing:.14em;font-weight:600;color:var(--pc);margin-bottom:6px;padding:2px 9px;border:1px solid var(--line-2);border-radius:999px}
+  .point .pt b{font-size:14.5px;font-weight:700;color:var(--ink);display:block;margin-bottom:7px;line-height:1.5}
+  .sent-list{display:flex;flex-direction:column;gap:8px}
+  .sent{font-size:13.5px;color:var(--ink-2);line-height:1.7;padding-left:15px;position:relative}
+  .sent::before{content:"";position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--pc);opacity:.55}
+  .sent b{display:inline;font-size:13.5px;color:var(--accent);font-weight:600}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+  .tags i{font-style:normal;font-size:12px;background:var(--green-soft);color:var(--green);padding:5px 12px;border-radius:999px}
+  .tags i:nth-child(3n-1){background:var(--cyan-soft);color:var(--cyan)}
+  .tags i:nth-child(3n){background:var(--gold-soft);color:var(--gold)}
+  /* 精简视图 */
+  body.compact-view .full-only{display:none}
+  body:not(.compact-view) .compact-only{display:none}
+  body.compact-view section.module{padding:15px 17px;margin-bottom:12px}
+  .compact-list{display:flex;flex-direction:column;gap:14px}
+  .compact-item{background:transparent;border:0;padding:0}
+  .compact-item .ch{display:flex;gap:10px;align-items:baseline;margin-bottom:4px}
+  .compact-item .ch .n{font-family:"Noto Serif SC",serif;font-weight:700;color:var(--accent);font-size:13px}
+  .compact-item .ch b{font-family:"Noto Serif SC",serif;font-size:14px;font-weight:700;color:var(--ink);letter-spacing:.01em}
+  .compact-item p{font-size:13px;color:var(--ink-2);line-height:1.6}
+  .compact-item .tags{margin-top:8px;padding-top:8px}
+  .compact-item .tags i{font-size:12px;padding:4px 10px}
+  /* 总结 */
+  .summary{background:linear-gradient(135deg,#14111d,#1d1628);border:1px solid var(--line);color:#ece9f3;border-radius:20px;padding:32px 30px;margin-top:30px}
+  .summary h3{font-family:"Noto Serif SC",serif;font-size:21px;margin-bottom:20px}
+  .summary .lesson{margin-bottom:20px}
+  .summary .lesson:last-child{margin-bottom:0}
+  .summary .lesson h4{font-size:13.5px;color:var(--accent);margin-bottom:10px;font-weight:600}
+  .summary ul{list-style:none;display:grid;gap:10px}
+  .summary li{padding-left:22px;position:relative;font-size:13.5px}
+  .summary li::before{content:"";position:absolute;left:0;top:11px;width:8px;height:8px;border-radius:50%;background:var(--green)}
+  .back-top{position:fixed;right:26px;bottom:26px;width:44px;height:44px;border-radius:13px;background:var(--accent);color:#14111d;border:0;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;z-index:30}
+  .back-top.show{opacity:1;pointer-events:auto}
+  .back-top:hover{transform:translateY(-3px)}
+  footer{position:relative;text-align:center;color:var(--ink-3);font-size:12.5px;padding:30px 0 40px;border-top:1px solid var(--line);margin-top:30px}
+  footer .foot-author{position:absolute;right:2px;bottom:14px;font-size:11px;letter-spacing:.08em;color:var(--ink-3);opacity:.7}
+  /* ===== 响应式 ===== */
+  @media (max-width:1023px){
+    .layout{grid-template-columns:1fr}
+    .topbar{display:flex}
+    aside.sidebar{
+      position:fixed;left:0;top:0;height:100vh;width:296px;z-index:50;
+      transform:translateX(-100%);transition:transform .28s ease;
     }
-  </script>
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .scrollbar-hide::-webkit-scrollbar {
-        display: none;
-      }
-      .scrollbar-hide {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-      .smooth-scroll {
-        scroll-behavior: smooth;
-      }
-      .nav-item-active {
-        @apply bg-purePurple/20 border-l-4 border-purePurple text-purePurple;
-      }
-      .tag-green {
-        @apply bg-appleGreen/15 text-appleGreen px-1.5 py-0.5 rounded text-xs;
-      }
-      .btn-primary {
-        @apply bg-purePurple hover:bg-purePurple/90 transition-all duration-300;
-      }
-      .btn-normal {
-        @apply bg-gray-700 hover:bg-gray-600 transition-all duration-300;
-      }
-      .fade-in-up {
-        opacity: 0;
-        transform: translateY(24px);
-        transition: all 0.7s ease-out;
-      }
-      .fade-in-up.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
-  <style>
-    body {
-      font-size: 13.5px;
-      line-height: 1.7;
-      letter-spacing: 0.02em;
-    }
-    @media (max-width:768px){
-      body{
-        font-size:12.5px;
-      }
-    }
-    .locked-block {
-      background: linear-gradient(180deg, #090911, #080b14);
-    }
-    .shake {
-      animation: shake 0.4s ease;
-    }
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      25% { transform: translateX(-4px); }
-      75% { transform: translateX(4px); }
-    }
-  </style>
+    aside.sidebar.open{transform:translateX(0)}
+    .overlay{display:block;position:fixed;inset:0;background:rgba(5,4,10,.6);z-index:45;opacity:0;pointer-events:none;transition:.28s}
+    .overlay.show{opacity:1;pointer-events:auto}
+    main{padding:0 20px 70px}
+  }
+  @media (max-width:600px){
+    body{font-size:13.5px;line-height:1.7}
+    section.module{padding:18px 16px}
+    body.compact-view section.module{padding:13px 15px;margin-bottom:11px}
+    .module-head{gap:12px;padding-bottom:13px;margin-bottom:16px}
+    .num{width:34px;height:34px;font-size:14px;border-radius:10px}
+    .point{gap:10px;padding:13px 14px;border-radius:12px}
+    .point .dot{width:22px;height:22px;font-size:11.5px}
+    .pt-tag{font-size:10px;padding:1px 8px;margin-bottom:5px}
+    .point .pt b{font-size:14px;margin-bottom:6px}
+    .sent{font-size:13.5px;line-height:1.7}
+    .core{font-size:13.5px;padding:13px 15px}
+    .compact-item .ch b{font-size:13.5px}
+    .compact-item p{font-size:12.5px}
+    .hero{padding:26px 0 20px}
+    .hero .stats{gap:18px}
+    .summary{padding:22px 18px}
+    .topbar .tt{font-size:14px}
+    .m-switch button{padding:6px 10px;font-size:12px}
+    .locked-block{padding:28px 18px;border-radius:20px}
+  }
+  @media (max-width:380px){
+    .point{flex-direction:column;gap:8px}
+    .point .dot{margin-top:0}
+    .hero .stats{gap:14px}
+    .hero .stats div{flex:1 1 40%}
+    .module-head{gap:10px}
+  }
+</style>
 </head>
-<body class="bg-dark text-gray-300 smooth-scroll">
-  <div class="flex">
-    <!-- 侧边目录 -->
-    <aside id="sidebar" class="fixed lg:sticky top-0 left-0 h-screen w-60 bg-cardBg transform -translate-x-full lg:translate-x-0 transition-all duration-400 z-40 overflow-y-auto scrollbar-hide">
-      <div class="p-4 border-b border-gray-700">
-        <h2 class="text-lg font-bold text-white">目录检索</h2>
-        <div class="mt-2.5">
-          <input id="searchInput" placeholder="搜索知识点..." class="w-full bg-dark border border-gray-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purePurple">
-        </div>
-      </div>
-      <nav id="navList" class="p-3">
-        <!-- JS渲染目录 -->
-      </nav>
-    </aside>
-    <div id="mask" class="fixed inset-0 bg-black/60 lg:hidden hidden z-30"></div>
-
-    <!-- 主内容 -->
-    <main class="flex-1 lg:pl-60">
-      <header class="sticky top-0 bg-dark/80 backdrop-blur-md z-20 border-b border-gray-800">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div class="flex items-center gap-3">
-            <button id="menuBtn" class="lg:hidden text-xl">
-              <i class="fa fa-bars"></i>
-            </button>
-            <div>
-              <h1 class="text-xl font-semibold text-white">草台班子</h1>
-              <p class="text-xs text-gray-500 mt-0.5">艺术 IP</p>
-            </div>
-          </div>
-          <div class="flex gap-2">
-            <button id="btnFull" class="btn-normal px-3 py-1.5 rounded-lg text-sm">完整版</button>
-            <button id="btnSimple" class="btn-primary px-3 py-1.5 rounded-lg text-sm">精简版</button>
-          </div>
-        </div>
-      </header>
-
-      <div class="container mx-auto px-4 py-6 max-w-4xl">
-        <!-- 账号运营与内容策略 -->
-        <section class="course-wrap fade-in-up" data-title="账号运营与内容策略" id="part1">
-          <div class="bg-cardBg rounded-xl p-5 mb-5 border border-gray-700">
-            <h2 class="text-xl font-semibold text-white mb-3">账号运营与内容策略</h2>
-            <div class="full-content hidden">
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-purePurple"></span>
-                  <h3 class="text-base text-purePurple font-medium">要点 01｜账号运营与内容策略</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">低质视频无意义</span>：单纯蹭热门得来的流量没有长期价值，内容空洞的视频毫无价值。</p>
-                <p class="mb-1.5"><span class="tag-green">内容转型与观众互动</span>：更换形式不等于做好内容，流量少大多是缺少打动人心的元素，走形式不走心无法留住观众。</p>
-                <p class="mb-1.5"><span class="tag-green">打动人心的内容要素</span>：真实感、情感共鸣、独特性；展现个人魅力甚至脆弱感，建立和观众的情感链接。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-softBlue"></span>
-                  <h3 class="text-base text-softBlue font-medium">要点 02｜提升账号变现能力的方法</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">控粉与调整出镜视觉</span>：筛选粉丝群体，优化出镜画面、打光，提升账号吸引力。</p>
-                <p class="mb-1.5"><span class="tag-green">输出自己与调整内核</span>：输出属于自己的观点，打造专属个人风格，增强粉丝粘性。</p>
-                <p class="mb-1.5"><span class="tag-green">推出产品与销售作品</span>：打造匹配账号定位的产品，依靠合理策略实现作品变现。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-softGold"></span>
-                  <h3 class="text-base text-softGold font-medium">要点 03｜打动人心的艺术 IP 打造</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">艺术 IP 的特点</span>：独特个人风格、情感共鸣、持续稳定输出。</p>
-                <p class="mb-1.5"><span class="tag-green">经典账号案例分析</span>：不出镜账号依靠音乐、文字传递情绪，印证情感共鸣的强大力量。</p>
-                <p class="mb-1.5"><span class="tag-green">艺术 IP 的变现逻辑</span>：不只依靠流量，依靠高质量内容沉淀忠实粉丝，通过产品、广告合作实现变现。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-appleGreen"></span>
-                  <h3 class="text-base text-appleGreen font-medium">要点 04｜执行力与目标设定</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">执行力的重要性</span>：再好的方案没有执行力，也无法落地。</p>
-                <p class="mb-1.5"><span class="tag-green">改变认知与提升执行力</span>：从画画博主转变为艺术 IP 的认知，带动执行力提升。</p>
-                <p class="mb-1.5"><span class="tag-green">目标设定与行动</span>：设定可衡量的目标，持续行动，依靠信念不断靠近目标。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-purePurple"></span>
-                  <h3 class="text-base text-purePurple font-medium">要点 05｜爆品策略与故事营销</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">爆品基因</span>：大人群或精人群、真需求、个性化差异化、高价值感知。</p>
-                <p class="mb-1.5"><span class="tag-green">故事营销的重要性</span>：故事是最高级的营销，可以快速拉近和观众距离。</p>
-                <p class="mb-1.5"><span class="tag-green">故事营销的策略</span>：用真实、有场景感的故事，塑造品牌，唤起情感共鸣。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-softBlue"></span>
-                  <h3 class="text-base text-softBlue font-medium">要点 06｜理念在艺术 IP 中的作用</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">理念的重要性</span>：理念是艺术 IP 的灵魂，赋予作品深度，建立长期关系。</p>
-                <p class="mb-1.5"><span class="tag-green">如何挖掘理念</span>：回溯过往创作经历，找到驱动自己创作的原动力。</p>
-                <p class="mb-1.5"><span class="tag-green">理念在艺术创作与 IP 运营中的应用</span>：将理念贯穿创作与运营，保持理念纯正统一。</p>
-              </div>
-              <div class="border-t border-gray-700 pt-3 text-gray-400 text-sm">
-                <strong>总结：</strong>弃低质流量内容，做走心艺术内容；以风格为表、故事为皮、理念为魂、执行为基，打造可长效变现的艺术 IP。
-              </div>
-            </div>
-            <div class="simple-content">
-              <p class="mb-2"><strong>账号运营与内容策略</strong>：丢掉低质蹭流视频，做真实、共情、独特的走心内容。 <span class="tag-green">真实感 / 情感共鸣 / 独特性</span></p>
-              <p class="mb-2"><strong>提升账号变现能力的方法</strong>：精准控粉 + 优化出镜视觉，输出个人内核，再用垂直产品承接变现。 <span class="tag-green">控粉 / 个人风格 / 产品变现</span></p>
-              <p class="mb-2"><strong>打动人心的艺术 IP 打造</strong>：独特风格 + 情感共鸣 + 持续输出，靠忠实粉丝而非泛流量变现。 <span class="tag-green">风格 / 共鸣 / 粉丝沉淀</span></p>
-              <p class="mb-2"><strong>执行力与目标设定</strong>：从「画画博主」升级为「艺术 IP」认知，设定量化目标，靠勇气和行动落地。 <span class="tag-green">认知升级 / 量化目标 / 持续行动</span></p>
-              <p class="mb-2"><strong>爆品策略与故事营销</strong>：爆品需有大/精人群、真需求、差异化、高价值感知；用真实具体的故事建立情感溢价。 <span class="tag-green">爆品基因 / 故事营销 / 场景共鸣</span></p>
-              <p class="mb-2"><strong>理念在艺术 IP 中的作用</strong>：理念是 IP 灵魂，回溯自我挖掘，并贯穿创作与运营，保持一致性和纯正性。 <span class="tag-green">灵魂 / 自我回溯 / 一致性</span></p>
-              <div class="border-t border-gray-700 pt-3 text-gray-400 text-sm">
-                <strong>一句话总结：</strong>风格为表、故事为皮、理念为魂、执行为基，把普通创作者做成有温度、可长效变现的艺术 IP。
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 流量与爆款逻辑 -->
-        <section class="course-wrap fade-in-up" data-title="流量与爆款逻辑  <span class='tag-green'>限时免费</span>" id="part2">
-          <div class="bg-cardBg rounded-xl p-5 mb-5 border border-gray-700">
-            <div class="flex items-center gap-2">
-              <h2 class="text-xl font-semibold text-white mb-3">流量与爆款逻辑</h2>
-              <span class="tag-green">限时免费</span>
-            </div>
-            <div class="full-content hidden">
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-purePurple"></span>
-                  <h3 class="text-base text-purePurple font-medium">要点 01｜流量增长的突变性</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">流量的突变性</span>：流量不是线性上涨，就算质量提升，数据也不会立刻显现，容易让人放弃正确路线。</p>
-                <p class="mb-1.5"><span class="tag-green">流量二八法则</span>：80% 的流量来自少数爆款，很多大博主也是依靠少数爆款起量，不必盲目羡慕。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-softBlue"></span>
-                  <h3 class="text-base text-softBlue font-medium">要点 02｜爆款视频的带动效应</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">爆款视频带动其他视频</span>：一个爆款可以带动整账号其他视频曝光，拉高账号整体流量。</p>
-                <p class="mb-1.5"><span class="tag-green">爆款视频的成因</span>：文案、表现力、环境、外貌都是因素，核心是抓住观众的共鸣点。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-softGold"></span>
-                  <h3 class="text-base text-softGold font-medium">要点 03｜爆款文案与框架的局限性</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">爆款文案与框架的局限性</span>：照搬爆款模板、文案，无法保证成功，爆款是多重因素共同作用。</p>
-                <p class="mb-1.5"><span class="tag-green">真诚与自我表达的重要性</span>：真诚、自我表达才是爆款的核心，真正打动观众才能获得认可。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-appleGreen"></span>
-                  <h3 class="text-base text-appleGreen font-medium">要点 04｜爆款基因的提取与应用</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">爆款基因的提取</span>：爆款基因就是触发观众情绪的要素，拆解音乐、画面、文案等。</p>
-                <p class="mb-1.5"><span class="tag-green">爆款基因的应用</span>：提取后结合自己风格灵活使用，不能直接照搬。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-purePurple"></span>
-                  <h3 class="text-base text-purePurple font-medium">要点 05｜短视频创作的实战技巧</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">短视频创作的视角转换</span>：既是表达者，也要作为感受者审视内容，读懂观众情绪。</p>
-                <p class="mb-1.5"><span class="tag-green">短视频创作的细节处理</span>：构图、音乐、文案都要打磨，细节决定最终效果。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-softBlue"></span>
-                  <h3 class="text-base text-softBlue font-medium">要点 06｜艺术创作与自媒体结合的路径</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">艺术创作的风格探索</span>：不断尝试创新，找到属于自己的独特艺术风格。</p>
-                <p class="mb-1.5"><span class="tag-green">自媒体与艺术创作的结合</span>：自媒体是展示窗口，接收观众反馈，持续优化创作。</p>
-              </div>
-              <div class="border-t border-gray-700 pt-3 text-gray-400 text-sm">
-                <strong>总结：</strong>流量靠爆款突变带动，爆款核心是共鸣与真诚；拆解基因灵活复用，双视角打磨细节，依托平台持续打磨个人艺术风格。
-              </div>
-            </div>
-            <div class="simple-content">
-              <p class="mb-2"><strong>流量增长的突变性</strong>：流量是突变爆发而非线性上涨，80% 流量来自一两个爆款，别因短期数据低迷放弃正确方法。 <span class="tag-green">突变增长 / 二八法则 / 长期坚持</span></p>
-              <p class="mb-2"><strong>爆款带动效应</strong>：一个爆款能带动全账号流量；成因很多（文案、表现力、环境、外貌），核心是找到与观众共鸣的点。 <span class="tag-green">带动效应 / 多因素 / 情感共鸣</span></p>
-              <p class="mb-2"><strong>文案框架的局限</strong>：照搬爆款框架不等于爆款，成功取决于多种因素；真诚表达、真正打动观众才是关键。 <span class="tag-green">框架局限 / 真诚 / 自我表达</span></p>
-              <p class="mb-2"><strong>爆款基因提取与应用</strong>：拆解爆款背后的情绪要素（音乐、画面、文案），结合自身风格灵活复用，不生搬硬套。 <span class="tag-green">情绪要素 / 灵活复用 / 结合风格</span></p>
-              <p class="mb-2"><strong>短视频实战技巧</strong>：切换表达者与感受者双视角，反复打磨构图、音乐、文案等细节。 <span class="tag-green">双视角 / 细节打磨 / 反复调整</span></p>
-              <p class="mb-2"><strong>艺术创作 × 自媒体</strong>：不断试错找到个人风格，借助自媒体贴近观众、根据反馈持续优化。 <span class="tag-green">风格探索 / 平台展示 / 反馈优化</span></p>
-              <div class="border-t border-gray-700 pt-3 text-gray-400 text-sm">
-                <strong>一句话总结：</strong>流量靠爆款突变带动，爆款靠共鸣与真诚；拆解基因灵活复用，用双视角和细节打磨内容，借平台持续优化风格。
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 商业化与市场落地 -->
-        <section class="course-wrap fade-in-up" data-title="商业化与市场落地  <span class='tag-green'>限时免费</span>" id="part3">
-          <div class="bg-cardBg rounded-xl p-5 mb-5 border border-gray-700">
-            <div class="flex items-center gap-2">
-              <h2 class="text-xl font-semibold text-white mb-3">商业化与市场落地</h2>
-              <span class="tag-green">限时免费</span>
-            </div>
-            <div class="full-content hidden">
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-purePurple"></span>
-                  <h3 class="text-base text-purePurple font-medium">要点 01｜小众圈子的艺术变现</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">小众圈子的定义与特点</span>：小众圈子是指具有特定兴趣和爱好的人群，他们对某些东西有足够的个性和狂热，内部的人容易狂热付费。</p>
-                <p class="mb-1.5"><span class="tag-green">小众圈子的变现方式</span>：小众圈子的变现方式包括众筹、产品定制、文化赋能等，通过众筹可以测试市场需求，降低风险。</p>
-                <p class="mb-1.5"><span class="tag-green">小众圈子的优势与壁垒</span>：小众圈子的优势在于成本低、竞争者少、高客单价；壁垒在于内部文化难以理解，需要成为内部人才能打开市场。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-softBlue"></span>
-                  <h3 class="text-base text-softBlue font-medium">要点 02｜艺术家与传统行业的结合</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">传统行业的转型需求</span>：传统行业因客户腻烦而急待转型，越是传统的行业越藏着机会。</p>
-                <p class="mb-1.5"><span class="tag-green">艺术赋能传统行业的方式</span>：艺术赋能传统行业的方式包括设计、文化附加、审美升级等，通过艺术赋予产品新的价值和意义。</p>
-                <p class="mb-1.5"><span class="tag-green">艺术赋能传统行业的成功案例</span>：成功案例包括艺术与蛋糕、美甲、食品、婚礼等行业的结合，通过审美升级和独特的文化内涵吸引消费者。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-softGold"></span>
-                  <h3 class="text-base text-softGold font-medium">要点 03｜艺术 IP 的打造与内容定位</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">艺术 IP 的定义与重要性</span>：艺术 IP 是通过艺术创作和营销手段打造的个人品牌，具有独特的文化价值和市场影响力。</p>
-                <p class="mb-1.5"><span class="tag-green">内容定位的四个类型</span>：内容定位包括流量型、人设型、营销型和销售型四种类型，每种类型的内容有不同的目的和表现形式。</p>
-                <p class="mb-1.5"><span class="tag-green">种草型内容的重要性与方式</span>：种草型内容通过展示艺术作品的设计理念、创作过程、文化内涵等方式，激发观众的兴趣和需求，建立情感连接，是艺术 IP 打造中的核心内容。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-appleGreen"></span>
-                  <h3 class="text-base text-appleGreen font-medium">要点 04｜艺术消费的决策逻辑与成交链路</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">艺术消费的决策逻辑</span>：艺术消费的决策逻辑包括价值判断、需求强度、情绪消费等，消费者更看重作品背后的文化和情感价值。</p>
-                <p class="mb-1.5"><span class="tag-green">成交链路的四个核心要素</span>：成交链路的四个核心要素是多维度的价值塑造、高情价比设计、需求场景的植入和设计成交情境。</p>
-                <p class="mb-1.5"><span class="tag-green">设计成交链路的步骤</span>：设计成交链路的步骤包括明确产品定位、内容化产品和人设、设计观众的感受和体验、建立信任关系、激发兴趣和需求、消除购买阻碍、建立购买共识和逼单成交。</p>
-              </div>
-              <div class="mb-4">
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2 h-2 rounded-full bg-purePurple"></span>
-                  <h3 class="text-base text-purePurple font-medium">要点 05｜艺术大市场的趋势与机遇</h3>
-                </div>
-                <p class="mb-1.5"><span class="tag-green">艺术大市场的定义与趋势</span>：艺术大市场是指通过艺术赋能各个行业，提升产品的审美和文化价值，满足消费者对高品质生活的需求。</p>
-                <p class="mb-1.5"><span class="tag-green">艺术赋能各行业的潜力</span>：艺术赋能各行业的潜力巨大，包括蛋糕、美甲、食品、婚礼等传统行业，通过艺术创新可以打开新的市场空间。</p>
-                <p class="mb-1.5"><span class="tag-green">未来艺术市场的发展方向</span>：未来艺术市场的发展方向是艺术与科技、生活、商业的深度融合，艺术 IP 的打造和内容营销将成为关键。</p>
-              </div>
-              <div class="border-t border-gray-700 pt-3 text-gray-400 text-sm">
-                <strong>总结：</strong>从圈层和传统行业找机会，用审美与文化赋能产品；靠种草内容建立信任、用成交链路完成转化，顺应艺术与生活商业融合的大趋势。
-              </div>
-            </div>
-            <div class="simple-content">
-              <p class="mb-2"><strong>小众圈子的艺术变现</strong>：面向有狂热偏好的特定人群，用众筹、定制、文化赋能变现；成本低、竞争少、客单价高，但需先懂圈内文化。 <span class="tag-green">小众圈层 / 众筹定制 / 高客单价</span></p>
-              <p class="mb-2"><strong>艺术家 × 传统行业</strong>：越传统越藏机会，用设计、文化附加、审美升级赋能；蛋糕、美甲、食品、婚礼都是落地方向。 <span class="tag-green">行业转型 / 审美升级 / 跨界案例</span></p>
-              <p class="mb-2"><strong>IP 打造与内容定位</strong>：艺术 IP 是有文化价值和影响力的个人品牌；内容分流量型、人设型、营销型、销售型，种草型是核心。 <span class="tag-green">个人品牌 / 四类定位 / 种草内容</span></p>
-              <p class="mb-2"><strong>消费决策与成交链路</strong>：消费者为文化和情感价值买单；靠价值塑造、情价比、场景植入、成交情境，走完定位→信任→激发→消除阻碍→成交的链路。 <span class="tag-green">决策逻辑 / 价值塑造 / 成交链路</span></p>
-              <p class="mb-2"><strong>艺术大市场趋势</strong>：艺术赋能各行业提升审美与文化价值；未来走向艺术 × 科技 × 生活 × 商业融合，IP 打造和内容营销是关键。 <span class="tag-green">市场趋势 / 跨界赋能 / 融合发展</span></p>
-              <div class="border-t border-gray-700 pt-3 text-gray-400 text-sm">
-                <strong>一句话总结：</strong>从圈层和传统行业找机会，用审美与文化赋能产品；靠种草内容建立信任、用成交链路完成转化，顺应艺术与生活商业融合的大趋势。
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- 锁定区块 -->
-        <section class="fade-in-up">
-          <div class="locked-block rounded-xl p-8 mb-5 border border-gray-700 text-center">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full ring-1 ring-purePurple/40 shadow-[0_0_18px_rgba(139,92,246,0.18)] mb-4">
-              <svg width="22" height="26" viewBox="0 0 22 26" fill="none" stroke="#8b5cf6" stroke-width="1.4">
-                <path d="M16 10V6C16 2.686 13.314 0 10 0C6.686 0 4 2.686 4 6V10"/>
-                <rect x="2" y="10" width="18" height="14" rx="2"/>
-              </svg>
-            </div>
-            <div class="tracking-[0.28em] text-xs text-gray-500">LOCKED · 未解锁</div>
-            <h2 class="text-xl font-semibold text-white mt-2">后续课程</h2>
-          </div>
-        </section>
-
-        <div class="text-right text-gray-600 text-xs mt-8">游泷</div>
-
-        <button id="backTop" class="btn-green fixed bottom-5 right-5 w-11 h-11 rounded-full hidden shadow-xl">
-          <i class="fa fa-arrow-up"></i>
-        </button>
-      </div>
-    </main>
+<body class="compact-view">
+<div class="topbar">
+  <button class="burger" id="burger" aria-label="目录">☰</button>
+  <div class="tt">草台班子<small> · 艺术 IP</small></div>
+  <div class="m-switch">
+    <button data-view="full">完整版</button>
+    <button data-view="compact" class="active">精简版</button>
   </div>
-
-  <script>
-    // 目录数据
-    const navData = [
-      { title: "账号运营与内容策略", id: "part1" },
-      { title: "流量与爆款逻辑", id: "part2" },
-      { title: "商业化与市场落地", id: "part3" }
-    ];
-
-    // 渲染目录
-    const navList = document.getElementById("navList");
-    const searchInput = document.getElementById("searchInput");
-
-    function render(list) {
-      navList.innerHTML = "";
-      list.forEach(item => {
-        const a = document.createElement("a");
-        a.href = `#${item.id}`;
-        a.className = "block px-3 py-2 rounded hover:bg-gray-700 transition text-gray-300";
-        a.innerHTML = item.title;
-        navList.appendChild(a);
-      });
-    }
-    render(navData);
-
-    // 搜索
-    searchInput.addEventListener("input", () => {
-      const val = searchInput.value.toLowerCase();
-      const filter = navData.filter(x => x.title.toLowerCase().includes(val));
-      render(filter);
+</div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="kicker">Art IP Notes</div>
+      <h1>草台班子<br><span class="brand-sub">艺术 IP 课程笔记</span></h1>
+      <p>从普通创作者到能长效变现的个人艺术 IP</p>
+    </div>
+    <div class="search">
+      <span class="ico">⌕</span>
+      <input type="text" id="searchInput" placeholder="搜索知识点 / 关键词…">
+      <button class="clear" id="searchClear">✕</button>
+    </div>
+    <nav id="toc"></nav>
+    <div class="side-switch">
+      <button data-view="full">完整版</button>
+      <button data-view="compact" class="active">精简版</button>
+    </div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+  <main>
+    <div class="hero">
+      <span class="tag">艺术 IP · 系列课程笔记</span>
+      <h2>草台班子<em>· 把创作做成品牌</em></h2>
+      <p>梳理账号策略、变现方法、IP 打造、流量规律、爆款实战、圈层跨界与成交链路，支持目录跳转与关键词检索。</p>
+      <div class="stats">
+        <div><b id="statCourses">3</b>大模块</div>
+        <div><b id="statModules">17</b>个知识要点</div>
+        <div><b>2</b>种视图：完整 / 精简</div>
+      </div>
+    </div>
+    <div id="content"></div>
+    <div class="summary">
+      <h3>课程一句话总结</h3>
+      <div id="summaryBox"></div>
+    </div>
+    <section class="locked-block" id="lockedBlock">
+      <div class="lock-head">
+        <div class="lock-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5" y="10" width="14" height="10" rx="2.5" />
+            <path d="M8 10V7.5a4 4 0 0 1 8 0V10" />
+            <circle cx="12" cy="15" r="1.3" fill="currentColor" stroke="none" />
+          </svg>
+        </div>
+        <div class="lock-head-text">
+          <span class="lock-kicker">LOCKED · 未解锁</span>
+          <h3>后续课程</h3>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div class="foot-line">草台班子 · 艺术 IP 课程笔记整理</div>
+      <div class="foot-author">游泷</div>
+    </footer>
+  </main>
+</div>
+<button class="back-top" id="backTop" aria-label="返回顶部">↑</button>
+<script>
+const courses = [
+  {
+    id:"c1", badge:"PART 01", title:"账号运营与内容策略",
+    desc:"账号内容策略、变现体系、IP 塑造、执行力、爆品营销与理念内核",
+    modules:[
+      {
+        id:"m1", title:"账号运营与内容策略",
+        kn:["低质视频无意义","内容转型与观众互动","打动人心的内容要素"],
+        points:[
+          {t:"低质流量没有长期价值", d:"跟风热门模板、蹭热点、搬运转场换来的播放量只是短暂曝光，视频本身没有观点、没有作品、没有让人记住的点。这类内容留不住粉丝，也沉淀不下个人 IP，对账号没有长期价值；已发布的低质视频建议隐藏清理，避免拉低账号整体质感。"},
+          {t:"转型换形式，更要换质量", d:"把变装转场换成出门画画、把室内拍摄换成户外取景，只是换了外壳，观众记不住你。流量上不去，往往不是形式老旧，而是<b>只走形式、不走心</b>——没有真实情绪、没有个人表达、没有打动人的元素。转型时要同时优化内容形式和内核，并主动看评论、回评论，和观众建立互动。"},
+          {t:"打动人心的三大内容要素", d:"<b>真实感</b>：不立完美人设，保留创作的真实状态；<b>情感共鸣</b>：让观众从作品和过程里看见情绪、看见生活、看见自己；<b>独特性</b>：保留个人创作习惯和审美偏好，形成不可替代的记忆点。适度展现创作者的魅力甚至脆弱、困惑与坚持，能打破距离感，和观众建立深度情感链接。"}
+        ],
+        core:"弃掉无意义的低质流量，用真实、共情、独特的走心内容留住观众。",
+        tags:["真实感","情感共鸣","独特性"]
+      },
+      {
+        id:"m2", title:"提升账号变现能力的方法",
+        kn:["控粉与调整出镜视觉","输出自己与调整内核","推出产品与销售作品"],
+        points:[
+          {t:"精准控粉 + 优化视觉", d:"根据账号定位筛选粉丝群体，比如原本吸引来大量泛男粉、和后续产品不匹配，就要通过内容调整把受众逐步转向高粘性、高消费意愿的人群；同时统一出镜视觉，包括打光、构图、色调、穿搭和背景，提升画面高级感和观众好感度，为后续变现铺垫。"},
+          {t:"输出个人内核，强化粘性", d:"普通博主只发作品，优质 IP 输出观点、态度和审美。在内容里讲清楚自己为什么这样画、喜欢什么、反对什么，形成独一无二的个人风格。同质化作品容易被替代，但专属的想法和态度无法复制，是粉丝信任和粘性的来源。"},
+          {t:"垂直产品化落地变现", d:"变现不靠泛流量，而靠内容沉淀粉丝、粉丝承接产品。围绕账号定位推出原创作品、定制服务、周边产品或课程，配合清晰的销售策略，把观看和信任转化为实际收益，实现稳定、可复制的变现。"}
+        ],
+        core:"精准控粉、优化视觉，输出个人内核，再用垂直产品承接粉丝变现。",
+        tags:["精准控粉","个人风格","产品变现"]
+      },
+      {
+        id:"m3", title:"打动人心的艺术 IP 打造",
+        kn:["艺术 IP 的特点","经典账号案例分析","艺术 IP 的变现逻辑"],
+        points:[
+          {t:"成功艺术 IP 的三大特质", d:"<b>独特的个人风格</b>（一眼能认出是你）、<b>情感共鸣</b>（内容能触动特定人群的情绪）、<b>持续稳定的高质量输出</b>（长期更新，不断累积 IP 价值），三者缺一不可。"},
+          {t:"案例：不出镜也能做成 IP", d:"参考一个不出镜却很成功的首饰销售账号：创作者不露脸，只靠贴合调性的背景音乐、简短走心的文字和精致的作品展示传递情绪，照样收获大量忠实粉丝。说明 IP 的核心是情绪与审美的共鸣，而不是出镜露脸。"},
+          {t:"价值变现大于流量变现", d:"艺术 IP 不靠平台流量分成，而靠高质量内容和独特风格筛选出忠实粉丝，再通过产品销售、广告合作、定制服务、课程教学等方式实现长效、高溢价变现。粉丝越信任，转化和溢价空间越大。"}
+        ],
+        core:"风格 + 共鸣 + 持续输出，靠忠实粉丝而非泛流量实现变现。",
+        tags:["个人风格","情感共鸣","粉丝沉淀"]
+      },
+      {
+        id:"m4", title:"执行力与目标设定",
+        kn:["执行力的重要性","改变认知与提升执行力","目标设定与行动"],
+        points:[
+          {t:"执行力决定 IP 成败", d:"再完整的规划、再好的内容思路，没有执行力落地都是空谈。大多数账号做不起来，不是想法不够，而是想法多、行动少、持续拖延，最后计划全部作废。"},
+          {t:"先升级认知，再谈执行", d:"把身份认知从「我只是个画画博主」升级为「我在打造自己的艺术品牌 IP」。定位升级后，创作标准、运营思维和坚持的毅力都会随之提高；明确目标、坚定信念，才不会被短期数据带偏。"},
+          {t:"设定可衡量的目标并行动", d:"把目标拆成明确、可衡量的长期和短期指标（如年度变现、粉丝增长、更新频率），靠每日持续积累逐步靠近。过程中要靠勇气和信念对抗创作瓶颈、流量低迷和变现缓慢，不轻易放弃。"}
+        ],
+        core:"升级身份认知，设定量化目标，靠勇气和持续行动把计划落地。",
+        tags:["认知升级","量化目标","持续行动"]
+      },
+      {
+        id:"m5", title:"爆品策略与故事营销",
+        kn:["爆品基因","故事营销的重要性","故事营销的策略"],
+        points:[
+          {t:"爆品的四大基因", d:"覆盖大人群或精准小众人群；满足真实存在的需求；和同类产品形成个性化差异化；让用户直观感受到审美、情绪或收藏上的<b>高价值感知</b>。"},
+          {t:"故事是最高级的营销", d:"单纯展示作品只有审美价值，搭配故事的作品才有情绪温度和溢价空间。真实的故事能迅速拉近和观众的距离、消除陌生感，建立深度情感链接，大幅提升认同感和购买意愿。"},
+          {t:"故事营销的落地策略", d:"讲真实、感人的故事塑造品牌和产品价值；把场景具体化、细节化，结合创作经历、成长故事、作品创作初衷；用情感共鸣打动观众，拒绝编造虚假鸡汤。故事讲得越具体，观众越容易代入，忠诚度和复购越高。"}
+        ],
+        core:"选有真需求的差异化产品，用真实、具体的故事建立情感溢价。",
+        tags:["爆品基因","故事营销","场景共鸣"]
+      },
+      {
+        id:"m6", title:"理念在艺术 IP 中的作用",
+        kn:["理念的重要性","如何挖掘理念","理念在创作与运营中的应用"],
+        points:[
+          {t:"理念是 IP 的灵魂", d:"技术、审美、形式都可以被模仿，但专属的创作理念无法复制。理念赋予创作者独特的魅力和作品深度，是打动观众、建立长期关系、支撑 IP 长久发展的根本。"},
+          {t:"向内回溯挖掘理念", d:"不用堆砌高级词汇，从自身出发：回溯成长经历和审美形成过程，复盘每次创作选择和坚持的原则，找到真正驱动自己持续创作的核心动力，那就是专属理念。"},
+          {t:"把理念贯穿始终", d:"把理念融入艺术创作、账号运营和产品变现全过程，让作品风格、视频内容、产品设计、账号人设都围绕核心理念展开；保持理念的<b>一致性和纯正性</b>，不随意跟风更改初心，才能形成独特品牌特色和市场竞争力。"}
+        ],
+        core:"理念是 IP 的灵魂，从自我回溯中挖掘，并贯穿创作与运营始终。",
+        tags:["灵魂内核","自我回溯","一致性"]
+      }
+    ]
+  },
+  {
+    id:"c2", badge:"PART 02", title:"流量与爆款逻辑", promo:"限时免费",
+    desc:"流量突变性、爆款带动效应、基因提取、创作技巧与艺术自媒体结合路径",
+    modules:[
+      {
+        id:"m7", title:"流量增长的突变性",
+        kn:["流量的突变性","流量二八法则"],
+        points:[
+          {t:"流量是突变式，而非线性增长", d:"流量增长往往是阶梯式、爆发式的，不是今天比昨天好一点、明天再多一点。即使视频质量明显提升，数据也可能滞后一段时间才体现，这种落差很容易让人误判方向、放弃正确方法。要接受数据的滞后性，坚持做对的内容。"},
+          {t:"流量分配遵循二八法则", d:"<b>80% 的流量往往来自一两个爆款视频</b>，其余视频只是基础曝光。不必盲目羡慕大博主的高粉丝量，他们多半也是靠少数几个爆款积累起大量粉丝，再带动账号整体。"}
+        ],
+        core:"流量是突变爆发而非线性上涨，80% 流量通常来自一两个爆款，别因短期数据低迷放弃正确方法。",
+        tags:["突变式增长","二八法则","长期坚持"]
+      },
+      {
+        id:"m8", title:"爆款视频的带动效应",
+        kn:["爆款带动其他视频","爆款视频的成因"],
+        points:[
+          {t:"一个爆款带动全盘流量", d:"爆款不只是单条视频火，它会带动账号内其他视频的播放和关注，提升整个账号的曝光度和权重，是账号破圈、涨粉的重要杠杆。"},
+          {t:"成因多样，共鸣最重要", d:"爆款成因很多，包括文案、博主表现力、环境特殊性、外貌气质等，但最重要的是找到与观众产生共鸣的那个点——情绪、经历或审美上的契合。"}
+        ],
+        core:"一个爆款能带动全账号流量；成因很多，核心是找到与观众共鸣的点。",
+        tags:["带动效应","多因素","情感共鸣"]
+      },
+      {
+        id:"m9", title:"爆款文案与框架的局限性",
+        kn:["文案框架的局限","真诚与自我表达"],
+        points:[
+          {t:"爆款框架不保证流量", d:"爆款文案或框架不能保证视频流量。爆款成功是文案、表现力、时机、共鸣等多种因素叠加的结果，照搬模板很难复制结果，甚至会显得生硬违和。"},
+          {t:"真诚与自我表达才是关键", d:"真诚和自我表达是做出爆款的关键。只有真正打动观众的内容，才能获得认可和喜爱；形式技巧只是辅助，替代不了真实的表达。"}
+        ],
+        core:"照搬爆款框架不等于爆款，真诚表达、真正打动观众才是关键。",
+        tags:["框架局限","真诚","自我表达"]
+      },
+      {
+        id:"m10", title:"爆款基因的提取与应用",
+        kn:["爆款基因的提取","爆款基因的应用"],
+        points:[
+          {t:"提取引发情绪的具体要素", d:"爆款基因就是观众看视频时产生情绪反应的原因。拆解爆款视频，把引发情绪的要素一一提取出来，比如音乐节奏、画面构图、文案措辞、开头钩子、情绪节点等。"},
+          {t:"结合自身风格灵活复用", d:"把提取出的基因迁移到自己的视频中，可以提升流量和观众认可度；但基因不是万能钥匙，必须结合自己的创作风格和目标观众需求灵活调整，不能生搬硬套。"}
+        ],
+        core:"拆解爆款背后的情绪要素（音乐/画面/文案），结合自身风格灵活复用，不生搬硬套。",
+        tags:["情绪要素","灵活复用","结合风格"]
+      },
+      {
+        id:"m11", title:"短视频创作的实战技巧",
+        kn:["视角转换","细节处理"],
+        points:[
+          {t:"表达者与感受者双视角", d:"创作时既要站在表达者角度把内容讲清楚，也要切换到感受者角度，像第一次看视频的观众一样审视自己的内容：开头有没有吸引力、情绪有没有传达到、哪里会让人划走。通过视角转换，更好理解观众需求和情绪反应。"},
+          {t:"反复打磨细节", d:"短视频的成败往往取决于细节：画面构图、音乐选择、文案撰写、节奏剪辑都要精心打磨、反复调整。细节到位，才能打造出真正打动观众的爆款。"}
+        ],
+        core:"切换表达者与感受者双视角，反复打磨构图、音乐、文案等细节。",
+        tags:["双视角","细节打磨","反复调整"]
+      },
+      {
+        id:"m12", title:"艺术创作与自媒体结合的路径",
+        kn:["风格探索","自媒体与创作结合"],
+        points:[
+          {t:"不断探索个人风格", d:"艺术创作需要不断探索和创新，通过尝试不同手法、题材和表现形式，逐步试错，找到适合自己的独特风格。"},
+          {t:"借平台贴近观众、持续优化", d:"自媒体为艺术创作者提供展示和推广作品的平台；通过平台和观众建立更紧密的联系，收集需求和反馈，反过来不断优化创作内容和形式，形成创作—反馈—迭代的循环。"}
+        ],
+        core:"不断试错找到个人风格，借助自媒体贴近观众、根据反馈持续优化。",
+        tags:["风格探索","平台展示","反馈优化"]
+      }
+    ]
+  },
+  {
+    id:"c3", title:"商业化与市场落地", promo:"限时免费",
+    desc:"小众圈子变现、艺术赋能传统行业、IP 内容定位、消费决策与成交链路、市场趋势机遇",
+    modules:[
+      {
+        id:"m13", title:"小众圈子的艺术变现",
+        kn:["小众圈子的定义与特点","小众圈子的变现方式","小众圈子的优势与壁垒"],
+        points:[
+          {t:"定义与特点：狂热的特定人群", d:"小众圈子是有特定兴趣爱好的人群，他们对某些东西有足够的个性和狂热，圈层内部认同度高，容易为热爱付费，客单价和忠诚度都更高。"},
+          {t:"变现方式：众筹、定制、文化赋能", d:"包括众筹、产品定制、文化赋能等方式。众筹可以先测试市场需求、降低生产风险；定制满足圈层个性化需求；文化赋能则把圈层偏好转化为产品附加值。"},
+          {t:"优势与壁垒", d:"优势是<b>成本低、竞争者少、高客单价</b>；壁垒是内部文化、黑话和审美很难被外人理解，需要先成为圈内人、融入圈层，才能真正打开市场。"}
+        ],
+        core:"面向有狂热偏好的小众人群，用众筹、定制、文化赋能变现；成本低、竞争少、客单价高，但需懂圈内文化。",
+        tags:["小众圈层","众筹定制","高客单价"]
+      },
+      {
+        id:"m14", title:"艺术家与传统行业的结合",
+        kn:["传统行业的转型需求","艺术赋能传统行业的方式","艺术赋能的成功案例"],
+        points:[
+          {t:"越传统，越藏机会", d:"传统行业客户容易腻烦、急需转型，越是传统的行业，审美和文化升级的空间越大，藏着越多艺术切入的机会。"},
+          {t:"赋能方式：设计、文化附加、审美升级", d:"通过产品设计、文化内涵附加、整体审美升级等方式，用艺术给传统产品赋予新的价值和意义，让普通商品变得有格调、有故事。"},
+          {t:"成功案例", d:"艺术与蛋糕、美甲、食品、婚礼等行业结合，靠审美升级和独特文化内涵吸引消费者，把功能性消费变成审美和情绪消费。"}
+        ],
+        core:"用设计、文化附加和审美升级赋能传统行业，蛋糕、美甲、食品、婚礼都是可落地的方向。",
+        tags:["行业转型","审美升级","跨界案例"]
+      },
+      {
+        id:"m15", title:"艺术 IP 的打造与内容定位",
+        kn:["艺术 IP 的定义与重要性","内容定位的四个类型","种草型内容的重要性与方式"],
+        points:[
+          {t:"艺术 IP 是有价值的个人品牌", d:"艺术 IP 是通过艺术创作和营销手段打造的个人品牌，具备独特的文化价值和市场影响力，能被用户记住、信任并愿意持续买单。"},
+          {t:"四类内容定位", d:"内容定位分<b>流量型</b>（博曝光涨粉）、<b>人设型</b>（立个人形象）、<b>营销型</b>（推品牌活动）、<b>销售型</b>（促产品成交）四类，目的和表现形式各不相同，账号需要按阶段搭配使用。"},
+          {t:"种草型内容是核心", d:"种草型内容通过展示作品的设计理念、创作过程、文化内涵等，激发观众兴趣和需求、建立情感连接，是艺术 IP 打造中最核心、最持续的内容类型。"}
+        ],
+        core:"艺术 IP 是有文化价值和影响力的个人品牌；内容分流量、人设、营销、销售四类，种草型是核心。",
+        tags:["个人品牌","四类定位","种草内容"]
+      },
+      {
+        id:"m16", title:"艺术消费的决策逻辑与成交链路",
+        kn:["艺术消费的决策逻辑","成交链路的四个核心要素","设计成交链路的步骤"],
+        points:[
+          {t:"决策逻辑：为文化和情感买单", d:"艺术消费的决策逻辑包括价值判断、需求强度、情绪消费等；相比实用功能，消费者更看重作品背后的文化意义和情感价值，愿意为共鸣和审美支付溢价。"},
+          {t:"成交链路四要素", d:"<b>多维度价值塑造</b>（讲清作品好在哪、值在哪）、<b>高情价比设计</b>（让情绪价值和价格匹配）、<b>需求场景植入</b>（把产品放进用户生活场景）、<b>设计成交情境</b>（营造适合下单的氛围和时机）。"},
+          {t:"成交链路设计步骤", d:"明确产品定位 → 把产品和人设内容化 → 设计观众的感受和体验 → 建立信任关系 → 激发兴趣和需求 → 消除购买阻碍（疑虑、价格、售后）→ 建立购买共识 → 逼单成交。"}
+        ],
+        core:"消费者为文化和情感价值买单；靠价值塑造、情价比、场景植入和成交情境，设计完整成交链路。",
+        tags:["决策逻辑","价值塑造","成交链路"]
+      },
+      {
+        id:"m17", title:"艺术大市场的趋势与机遇",
+        kn:["艺术大市场的定义与趋势","艺术赋能各行业的潜力","未来艺术市场的发展方向"],
+        points:[
+          {t:"定义与趋势", d:"艺术大市场是通过艺术赋能各个行业，提升产品审美和文化价值，满足消费者对高品质、有格调生活的需求，市场空间持续扩大。"},
+          {t:"赋能各行业的潜力", d:"蛋糕、美甲、食品、婚礼等传统行业都有巨大的艺术赋能潜力，通过艺术创新可以打开新的市场空间，跳出低价竞争。"},
+          {t:"未来发展方向", d:"未来艺术市场走向艺术与科技、生活、商业的深度融合，艺术 IP 打造和内容营销将成为核心竞争力。"}
+        ],
+        core:"艺术赋能各行业提升审美与文化价值；未来走向艺术 × 科技 × 生活 × 商业融合，IP 与内容营销是关键。",
+        tags:["市场趋势","跨界赋能","融合发展"]
+      }
+    ]
+  }
+];
+const summaries = [
+  {title:"账号运营与内容策略", items:[
+    "内容：丢掉低质流量，做真实、共情、独特的走心艺术内容；",
+    "变现：不靠泛流量，靠 IP 价值、粉丝信任和垂直产品实现高溢价；",
+    "IP 核心：风格为表、故事为皮、理念为魂、执行为基。"
+  ]},
+  {title:"流量与爆款逻辑", items:[
+    "流量：增长是突变式的，遵循二八法则，80% 流量往往来自一两个爆款；",
+    "爆款：能带动全账号流量，核心是共鸣；框架不能复制爆款，真诚表达才是关键；",
+    "方法：拆解爆款情绪基因并灵活复用，用双视角和细节打磨内容，借自媒体贴近观众、持续优化风格。"
+  ]},
+  {title:"商业化与市场落地", items:[
+    "圈层：小众圈子成本低、竞争少、客单价高，需懂圈内文化，用众筹、定制、文化赋能变现；",
+    "跨界：艺术通过设计、文化附加、审美升级赋能传统行业，蛋糕、美甲、食品、婚礼机会大；",
+    "成交：消费者为文化与情感价值买单，靠价值塑造、情价比、场景植入和完整成交链路转化；",
+    "趋势：艺术与科技、生活、商业深度融合，IP 打造和内容营销是未来关键。"
+  ]}
+];
+/* 未解锁目录（占位：仅视觉，点击不可查看） */
+const lockedModules = [
+  "商业合作报价与谈单策略",
+  "个人 IP 人设定位与记忆点",
+  "短视频镜头表达与出镜状态",
+  "私域社群搭建与粉丝运营",
+  "周边产品设计与供应链对接",
+  "直播带货流程与话术设计",
+  "品牌联名与跨界合作策划",
+  "艺术课程产品化与知识付费",
+  "数据复盘与内容迭代方法",
+  "版权保护与作品商业化授权",
+  "线下展览与沙龙活动策划",
+  "跨平台分发与账号矩阵运营",
+  "受众画像分析与精准引流",
+  "审美体系构建与风格沉淀",
+  "长期品牌增长与变现复盘"
+];
+/* ---------- 渲染 ---------- */
+const toc = document.getElementById("toc");
+const content = document.getElementById("content");
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function splitSentences(html){
+  const parts = (html.match(/[^。！？；]+[。！？；]?/g)||[]).map(s=>s.trim()).filter(Boolean);
+  return parts.length ? parts : [html];
+}
+function render(){
+  let tocHtml = "", mainHtml = "", idx = 0;
+  courses.forEach((c,ci)=>{
+    tocHtml += `<div class="toc-group">
+      <div class="toc-title"><span class="toc-badge">${c.badge}</span><span class="toc-cname">${c.title}</span>${c.promo?`<span class="toc-promo">${c.promo}</span>`:""}</div>
+      <div class="toc-list">`;
+    mainHtml += `<div class="course ${ci%2===1?'alt':''}" id="${c.id}">`;
+    mainHtml += `<div class="course-head"><div class="badge">${c.badge}</div><h3>${c.title}</h3>${c.promo?`<span class="head-promo">${c.promo}</span>`:""}<p>${c.desc}</p></div>`;
+    c.modules.forEach((m,mi)=>{
+      idx++;
+      tocHtml += `<a href="#${m.id}" data-id="${m.id}"><span class="no">${ci+1}.${mi+1}</span>${m.title}</a>`;
+      mainHtml += `
+      <section class="module" id="${m.id}" data-search="${esc((m.title+m.kn.join(" ")+m.points.map(p=>p.t+p.d).join(" ")+m.tags.join(" ")+m.core).toLowerCase())}">
+        <div class="module-head">
+          <div class="num">${ci+1}.${mi+1}</div>
+          <div class="tt">
+            <h4>${m.title}</h4>
+            <div class="kn">${m.kn.map(k=>`<span>${k}</span>`).join("")}</div>
+          </div>
+        </div>
+        <div class="core full-only">${m.core}</div>
+        <div class="points full-only">
+          ${m.points.map((p,pi)=>`
+            <div class="point">
+              <div class="dot">${pi+1}</div>
+              <div class="pt">
+                <span class="pt-tag">要点 ${String(pi+1).padStart(2,"0")}</span>
+                <b>${p.t}</b>
+                <div class="sent-list">${splitSentences(p.d).map(s=>`<div class="sent">${s}</div>`).join("")}</div>
+              </div>
+            </div>`).join("")}
+        </div>
+        <div class="tags full-only">${m.tags.map(t=>`<i>${t}</i>`).join("")}</div>
+        <div class="compact-only compact-item">
+          <div class="ch"><span class="n">${ci+1}.${mi+1}</span><b>${m.title}</b></div>
+          <p>${m.core}</p>
+          <div class="tags">${m.tags.map(t=>`<i>${t}</i>`).join("")}</div>
+        </div>
+      </section>`;
     });
-
-    // 侧边栏
-    const sidebar = document.getElementById("sidebar");
-    const mask = document.getElementById("mask");
-    const menuBtn = document.getElementById("menuBtn");
-
-    function closeSide() {
-      sidebar.classList.add("-translate-x-full");
-      mask.classList.add("hidden");
-    }
-    function openSide() {
-      sidebar.classList.remove("-translate-x-full");
-      mask.classList.remove("hidden");
-    }
-    menuBtn.addEventListener("click", () => {
-      if(sidebar.classList.contains("-translate-x-full")) openSide();
-      else closeSide();
+    tocHtml += `</div></div>`;
+    mainHtml += `</div>`;
+  });
+  /* 未解锁目录分组（占位，点击回弹不可查看） */
+  tocHtml += `<div class="toc-group toc-locked-group">
+    <div class="toc-title"><span class="toc-badge toc-badge-locked">未解锁</span><span class="toc-cname">后续课程</span></div>
+    <div class="toc-list">
+      ${lockedModules.map((t,i)=>`<a class="locked" data-locked="${i+1}" href="javascript:;" title="暂无权限查看"><span class="lock-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2.5" /><path d="M8 10V7.5a4 4 0 0 1 8 0V10" /><circle cx="12" cy="15" r="1.3" fill="currentColor" stroke="none" /></svg></span><span class="lk-text">${t}</span><span class="lock-tag">无权限</span></a>`).join("")}
+    </div>
+  </div>`;
+  toc.innerHTML = tocHtml;
+  content.innerHTML = mainHtml;
+  document.getElementById("statModules").textContent = idx;
+  document.getElementById("summaryBox").innerHTML = summaries.map(s=>`
+    <div class="lesson"><h4>${s.title}</h4><ul>${s.items.map(i=>`<li>${i}</li>`).join("")}</ul></div>
+  `).join("");
+}
+/* ---------- 视图切换 ---------- */
+function switchView(v){
+  document.body.classList.toggle("compact-view", v==="compact");
+  document.querySelectorAll("[data-view]").forEach(btn=>{
+    btn.classList.toggle("active", btn.dataset.view===v);
+  });
+}
+document.querySelectorAll("[data-view]").forEach(btn=>{
+  btn.addEventListener("click", ()=>switchView(btn.dataset.view));
+});
+/* ---------- 目录跳转 + 抽屉 ---------- */
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+document.getElementById("burger").onclick = ()=>{sidebar.classList.add("open");overlay.classList.add("show")};
+overlay.onclick = ()=>{sidebar.classList.remove("open");overlay.classList.remove("show")};
+toc.addEventListener("click", e=>{
+  const a = e.target.closest("a");
+  if(!a) return;
+  e.preventDefault();
+  if(a.classList.contains("locked")){ denyAccess(a); return; }
+  const target = document.getElementById(a.dataset.id);
+  switchView("full"); // 跳转目录自动显示完整版知识点
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+  if(target){ setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}), 80); }
+});
+/* 无权限：回弹 + 抖动反馈，不跳转 */
+function denyAccess(a){
+  a.classList.remove("denied"); void a.offsetWidth; a.classList.add("denied");
+  const tip = a.querySelector(".lock-tag");
+  if(tip){ tip.classList.add("flash"); setTimeout(()=>tip.classList.remove("flash"), 1200); }
+  setTimeout(()=>a.classList.remove("denied"), 480);
+}
+/* ---------- 检索过滤 ---------- */
+const searchInput = document.getElementById("searchInput");
+const searchClear = document.getElementById("searchClear");
+function applyFilter(){
+  const q = searchInput.value.trim().toLowerCase();
+  searchClear.style.display = q ? "block" : "none";
+  document.querySelectorAll("section.module").forEach(sec=>{
+    const hit = !q || sec.dataset.search.includes(q);
+    sec.style.display = hit ? "" : "none";
+    if(hit){ sec.classList.remove("fade-up"); void sec.offsetWidth; sec.classList.add("fade-up"); }
+  });
+  document.querySelectorAll(".toc-group").forEach(g=>{
+    if(g.classList.contains("toc-locked-group")){ g.style.display = ""; return; }
+    let visible = 0;
+    g.querySelectorAll("a").forEach(a=>{
+      const sec = document.getElementById(a.dataset.id);
+      const show = sec && sec.style.display !== "none";
+      a.style.display = show ? "" : "none";
+      if(show) visible++;
     });
-    mask.addEventListener("click", closeSide);
-
-    // 完整版 / 精简版
-    const full = document.querySelector(".full-content");
-    const simple = document.querySelector(".simple-content");
-    const btnFull = document.getElementById("btnFull");
-    const btnSimple = document.getElementById("btnSimple");
-
-    function setFull() {
-      document.querySelectorAll(".full-content").forEach(el=>el.classList.remove("hidden"));
-      document.querySelectorAll(".simple-content").forEach(el=>el.classList.add("hidden"));
-      btnFull.classList.remove("bg-gray-700");
-      btnFull.classList.add("bg-purePurple");
-      btnSimple.classList.remove("bg-purePurple");
-      btnSimple.classList.add("bg-gray-700");
+    g.style.display = visible ? "" : "none";
+  });
+  document.querySelectorAll(".course").forEach(c=>{
+    const any = [...c.querySelectorAll("section.module")].some(s=>s.style.display!=="none");
+    c.style.display = any ? "" : "none";
+  });
+}
+searchInput.addEventListener("input", applyFilter);
+searchClear.onclick = ()=>{searchInput.value="";applyFilter();searchInput.focus()};
+/* ---------- 滚动高亮 ---------- */
+const spyLinks = ()=>[...toc.querySelectorAll("a")];
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      spyLinks().forEach(a=>a.classList.toggle("active", a.dataset.id===en.target.id));
     }
-    function setSimple() {
-      document.querySelectorAll(".full-content").forEach(el=>el.classList.add("hidden"));
-      document.querySelectorAll(".simple-content").forEach(el=>el.classList.remove("hidden"));
-      btnSimple.classList.remove("bg-gray-700");
-      btnSimple.classList.add("bg-purePurple");
-      btnFull.classList.remove("bg-purePurple");
-      btnFull.classList.add("bg-gray-700");
-    }
-    btnFull.onclick = setFull;
-    btnSimple.onclick = setSimple;
-
-    // 滚动动画
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){
-          e.target.classList.add("visible");
-        }
-      })
-    }, { threshold: 0.12 });
-    document.querySelectorAll(".fade-in-up").forEach(el=>observer.observe(el));
-
-    // 返回顶部
-    const backTop = document.getElementById("backTop");
-    window.addEventListener("scroll", ()=>{
-      if(window.scrollY > 400) backTop.classList.remove("hidden");
-      else backTop.classList.add("hidden");
-    })
-    backTop.onclick = ()=> window.scrollTo({top:0, behavior:"smooth"});
-  </script>
+  });
+},{rootMargin:"-20% 0px -70% 0px"});
+function bindSpy(){document.querySelectorAll("section.module").forEach(s=>obs.observe(s))}
+/* 丝滑入场：进入视口后淡入上移，只触发一次 */
+const revealObs = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){ en.target.classList.add("in"); revealObs.unobserve(en.target); }
+  });
+},{rootMargin:"0px 0px -6% 0px",threshold:.06});
+function bindReveal(){
+  document.querySelectorAll("section.module").forEach(s=>{ s.classList.add("reveal"); revealObs.observe(s); });
+}
+/* ---------- 返回顶部 ---------- */
+const backTop = document.getElementById("backTop");
+window.addEventListener("scroll", ()=>{
+  backTop.classList.toggle("show", window.scrollY > 500);
+});
+backTop.onclick = ()=>window.scrollTo({top:0,behavior:"smooth"});
+render();
+bindSpy();
+bindReveal();
+</script>
 </body>
 </html>
