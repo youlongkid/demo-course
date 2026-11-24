@@ -625,7 +625,7 @@ const courses = [
         points:[
           {t:"定义与趋势", d:"艺术大市场是通过艺术赋能各个行业，提升产品审美和文化价值，满足消费者对高品质、有格调生活的需求，市场空间持续扩大。"},
           {t:"赋能各行业的潜力", d:"蛋糕、美甲、食品、婚礼等传统行业都有巨大的艺术赋能潜力，通过艺术创新可以打开新的市场空间，跳出低价竞争。"},
-          {t:"未来发展方向", d:"未来艺术市场走向艺术与科技、生活、商业的深度融合，艺术 IP 打造和内容营销将成为核心竞争力。"}
+          {t:"未来发展方向", d:"未来艺术市场走向艺术与科技、生活、商业的深度融合，IP 打造和内容营销将成为核心竞争力。"}
         ],
         core:"艺术赋能各行业提升审美与文化价值；未来走向艺术 × 科技 × 生活 × 商业融合，IP 与内容营销是关键。",
         tags:["市场趋势","跨界赋能","融合发展"]
@@ -896,5 +896,28 @@ document.addEventListener('mouseup',()=>{
   }
 });
 thumb.addEventListener('mouseenter',()=>{
-  clearTimeout(hideTimer);
- 
+  clear
+Timeout(hideTimer);
+  thumb.classList.add('show');
+});
+thumb.addEventListener('mouseleave', ()=>{
+  if (!isDragging) {
+    hideTimer = setTimeout(()=>{
+      topProgressWrap.classList.remove('show');
+      thumb.classList.remove('show');
+    },1000);
+  }
+});
+window.addEventListener('scroll',()=>{
+  showScrollUI();
+  updateScrollUI();
+});
+
+//页面初始化执行
+render();
+bindSpy();
+bindReveal();
+updateScrollUI();
+</script>
+</body>
+</html>
