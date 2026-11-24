@@ -36,9 +36,72 @@
     background:var(--bg);color:var(--ink);line-height:1.75;letter-spacing:.01em;
     -webkit-font-smoothing:antialiased;font-size:14px;overflow-wrap:break-word;
   }
+  /* 隐藏浏览器原生滚动条，保留滚动功能 */
+  html::-webkit-scrollbar{display:none;}
+  html{ -ms-overflow-style:none; scrollbar-width:none; }
+
   img,video{max-width:100%;height:auto}
   a{color:inherit;text-decoration:none}
   mark{background:#2a1f3d;color:#c4b5fd;border-radius:3px;padding:0 2px}
+
+  /* ==========新增：顶部阅读进度条 ========== */
+  .top-progress-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 60;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .top-progress-wrap.show {
+    opacity: 1;
+  }
+  .top-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#7b2cbf,#2ec4b6);
+  }
+
+  /* ==========新增：全局提示当前模块（桌面版页面顶部） ========== */
+  .current-part-hint{
+    position:fixed;
+    top:4px;
+    left:310px;
+    z-index:61;
+    font-size:12px;
+    color:var(--ink-2);
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 0.25s ease;
+  }
+  .current-part-hint.show{opacity:1;}
+
+  /* ==========新增自定义滚动滑块 桌面端有效 ========== */
+  .custom-scroll-track {
+    position: fixed;
+    top:0;
+    right:4px;
+    width:8px;
+    height:100vh;
+    z-index:55;
+    pointer-events:none;
+  }
+  .custom-scroll-thumb{
+    pointer-events:auto;
+    width:6px;
+    height:36px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.35);
+    opacity:0;
+    transition:opacity 0.25s ease;
+    cursor:grab;
+  }
+  .custom-scroll-thumb.show,
+  .custom-scroll-thumb.active{opacity:1;}
+  .custom-scroll-thumb:active{cursor:grabbing;}
+
   /* ===== 顶部栏（移动端） ===== */
   .topbar{
     position:sticky;top:0;z-index:40;display:none;
@@ -260,6 +323,10 @@
   footer .foot-author{position:absolute;right:2px;bottom:14px;font-size:11px;letter-spacing:.08em;color:var(--ink-3);opacity:.7}
   /* ===== 响应式 ===== */
   @media (max-width:1023px){
+    /* 移动端关闭自定义滑块，恢复原生逻辑 */
+    .custom-scroll-track{display:none;}
+    .current-part-hint{display:none;}
+
     .layout{grid-template-columns:1fr}
     .topbar{display:flex}
     aside.sidebar{
@@ -302,6 +369,17 @@
 </style>
 </head>
 <body class="compact-view">
+<!-- 新增：顶部阅读进度条 -->
+<div class="top-progress-wrap">
+  <div class="top-progress-bar"></div>
+</div>
+<!-- 新增：桌面端显示当前PART -->
+<div class="current-part-hint" id="currentPartHint"></div>
+<!-- 新增：自定义滚动滑块容器 -->
+<div class="custom-scroll-track">
+  <div class="custom-scroll-thumb"></div>
+</div>
+
 <div class="topbar">
   <button class="burger" id="burger" aria-label="目录">☰</button>
   <div class="tt">草台班子<small> · 艺术 IP</small></div>
@@ -508,7 +586,7 @@ const courses = [
     ]
   },
   {
-    id:"c3", title:"商业化与市场落地", promo:"限时免费",
+    id:"c3", badge:"PART 03", title:"商业化与市场落地", promo:"限时免费",
     desc:"小众圈子变现、艺术赋能传统行业、IP 内容定位、消费决策与成交链路、市场趋势机遇",
     modules:[
       {
@@ -619,7 +697,7 @@ function render(){
     tocHtml += `<div class="toc-group">
       <div class="toc-title"><span class="toc-badge">${c.badge}</span><span class="toc-cname">${c.title}</span>${c.promo?`<span class="toc-promo">${c.promo}</span>`:""}</div>
       <div class="toc-list">`;
-    mainHtml += `<div class="course ${ci%2===1?'alt':''}" id="${c.id}">`;
+    mainHtml += `<div class="course ${ci%2===1?'alt':''}" id="${c.id}" data-badge="${c.badge}">`;
     mainHtml += `<div class="course-head"><div class="badge">${c.badge}</div><h3>${c.title}</h3>${c.promo?`<span class="head-promo">${c.promo}</span>`:""}<p>${c.desc}</p></div>`;
     c.modules.forEach((m,mi)=>{
       idx++;
@@ -757,9 +835,31 @@ window.addEventListener("scroll", ()=>{
   backTop.classList.toggle("show", window.scrollY > 500);
 });
 backTop.onclick = ()=>window.scrollTo({top:0,behavior:"smooth"});
-render();
-bindSpy();
-bindReveal();
-</script>
-</body>
-</html>
+
+
+// =====================【新增全部自定义滚动滑块 + 顶部进度 + 当前PART逻辑】=====================
+const topProgressWrap = document.querySelector('.top-progress-wrap');
+const topProgressBar = document.querySelector('.top-progress-bar');
+const thumb = document.querySelector('.custom-scroll-thumb');
+const trackEl = document.querySelector('.custom-scroll-track');
+const currentPartHint = document.getElementById("currentPartHint");
+
+let hideTimer = null;
+let isDragging = false;
+
+// 更新进度条、滑块位置、当前PART文字
+function updateScrollUI(){
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const percent = scrollHeight <= 0 ? 0 : scrollTop / scrollHeight;
+
+  //顶部阅读进度
+  topProgressBar.style.width = `${percent*100}%`;
+
+  //自定义滑块位置
+  const trackH = trackEl.clientHeight;
+  const thumbH = thumb.clientHeight;
+  const maxTop = trackH - thumbH;
+  thumb.style.top = (percent * maxTop) + "px";
+
+  //识别当前所属
