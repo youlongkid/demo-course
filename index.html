@@ -859,4 +859,42 @@ function showScrollUI(){
   thumb.classList.add('show');
   clearTimeout(hideTimer);
   if (!isDragging) {
-    hideTimer
+    hideTimer = setTimeout(()=>{
+      topProgressWrap.classList.remove('show');
+      thumb.classList.remove('show');
+    },1000);
+  }
+}
+
+//滑块拖拽逻辑
+let dragStartY = 0;
+let scrollStart = 0;
+thumb.addEventListener('mousedown',(e)=>{
+  isDragging = true;
+  thumb.classList.add('active');
+  clearTimeout(hideTimer);
+  dragStartY = e.clientY;
+  scrollStart = document.documentElement.scrollTop;
+  document.body.style.userSelect = 'none';
+});
+document.addEventListener('mousemove',(e)=>{
+  if(!isDragging) return;
+  const trackH = trackEl.clientHeight;
+  const thumbH = thumb.clientHeight;
+  const maxTop = trackH - thumbH;
+  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const deltaY = e.clientY - dragStartY;
+  const p = deltaY / maxTop;
+  document.documentElement.scrollTop = scrollStart + (p * scrollHeight);
+});
+document.addEventListener('mouseup',()=>{
+  if(isDragging){
+    isDragging = false;
+    thumb.classList.remove('active');
+    showScrollUI();
+    document.body.style.userSelect = '';
+  }
+});
+thumb.addEventListener('mouseenter',()=>{
+  clearTimeout(hideTimer);
+ 
