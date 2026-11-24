@@ -36,7 +36,6 @@
     background:var(--bg);color:var(--ink);line-height:1.75;letter-spacing:.01em;
     -webkit-font-smoothing:antialiased;font-size:14px;overflow-wrap:break-word;
   }
-  /* 隐藏浏览器原生滚动条，保留滚动功能 */
   html::-webkit-scrollbar{display:none;}
   html{ -ms-overflow-style:none; scrollbar-width:none; }
 
@@ -44,7 +43,6 @@
   a{color:inherit;text-decoration:none}
   mark{background:#2a1f3d;color:#c4b5fd;border-radius:3px;padding:0 2px}
 
-  /* ==========新增：顶部阅读进度条 ========== */
   .top-progress-wrap {
     position: fixed;
     top: 0;
@@ -64,7 +62,6 @@
     background: linear-gradient(90deg,#7b2cbf,#2ec4b6);
   }
 
-  /* ==========新增：全局提示当前模块（桌面版页面顶部） ========== */
   .current-part-hint{
     position:fixed;
     top:4px;
@@ -78,7 +75,6 @@
   }
   .current-part-hint.show{opacity:1;}
 
-  /* ==========新增自定义滚动滑块 桌面端有效 ========== */
   .custom-scroll-track {
     position: fixed;
     top:0;
@@ -102,7 +98,6 @@
   .custom-scroll-thumb.active{opacity:1;}
   .custom-scroll-thumb:active{cursor:grabbing;}
 
-  /* ===== 顶部栏（移动端） ===== */
   .topbar{
     position:sticky;top:0;z-index:40;display:none;
     background:var(--sidebar);color:var(--sidebar-ink);
@@ -119,9 +114,8 @@
   .m-switch{display:flex;background:#1c1926;border-radius:10px;padding:3px;gap:3px}
   .m-switch button{border:0;background:transparent;color:var(--sidebar-ink-2);font-family:inherit;font-size:12.5px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:.25s;white-space:nowrap}
   .m-switch button.active{background:#2a2438;color:#fff;font-weight:600}
-  /* ===== 布局 ===== */
+
   .layout{display:grid;grid-template-columns:296px 1fr;max-width:1280px;margin:0 auto}
-  /* ===== 侧边目录 ===== */
   aside.sidebar{
     position:sticky;top:0;height:100vh;overflow-y:auto;
     background:var(--sidebar);color:var(--sidebar-ink);
@@ -156,7 +150,7 @@
   .toc-list a.active{background:var(--accent-soft);border-left-color:var(--accent);color:#fff;font-weight:600}
   .toc-list a.active .no{color:var(--accent)}
   .toc-list a .no{color:var(--sidebar-ink-2);font-size:11.5px;min-width:22px;transition:color .25s}
-  /* ---------- 未解锁目录 ---------- */
+
   .toc-badge-locked{background:var(--green-soft);color:var(--green)}
   .toc-list a.locked{color:var(--sidebar-ink-2);cursor:not-allowed;gap:7px;border-left-color:transparent}
   .toc-list a.locked:hover{background:#17151f}
@@ -177,7 +171,6 @@
     100%{transform:translateX(0)}
   }
   .denied{animation:denied .45s ease}
-  /* ---------- 限时免费小徽章 ---------- */
   .toc-promo{
     flex:none;font-size:9.5px;letter-spacing:.05em;color:var(--green);background:var(--green-soft);
     border:1px solid rgba(132,204,22,.28);border-radius:5px;padding:1px 7px;font-weight:600;
@@ -186,7 +179,6 @@
     font-size:11px;letter-spacing:.05em;color:var(--green);background:var(--green-soft);
     border:1px solid rgba(132,204,22,.28);border-radius:7px;padding:3px 10px;font-weight:600;align-self:center;
   }
-  /* ---------- 底部后续课程 · 锁头收尾 ---------- */
   .locked-block{
     background:linear-gradient(160deg,#0a0a10 0%,#0d1018 50%,#111624 100%);
     border:1px solid var(--line);color:#ece9f3;
@@ -214,7 +206,7 @@
   .side-switch button{flex:1;border:0;background:transparent;color:var(--sidebar-ink-2);font-family:inherit;font-size:13px;cursor:pointer;padding:8px 0;border-radius:8px;transition:.25s}
   .side-switch button.active{background:#2a2438;color:#fff;font-weight:600}
   .overlay{display:none}
-  /* ===== 正文 ===== */
+
   main{padding:0 40px 90px;min-width:0;max-width:860px}
   .hero{padding:52px 0 30px;border-bottom:1px solid var(--line);
     background:
@@ -228,13 +220,13 @@
   .hero .stats{display:flex;gap:26px;margin-top:20px;flex-wrap:wrap}
   .hero .stats div{font-size:12px;color:var(--ink-3)}
   .hero .stats b{display:block;font-family:"Noto Serif SC",serif;font-size:19px;color:var(--ink)}
-  /* 课程分隔 */
+
   .course-head{margin:38px 0 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .course-head .badge{font-family:"Noto Serif SC",serif;font-weight:900;font-size:13.5px;color:#fff;background:var(--green);border-radius:11px;padding:8px 14px}
   .course.alt .course-head .badge{background:var(--accent)}
   .course-head h3{font-family:"Noto Serif SC",serif;font-size:clamp(19px,2.2vw,22px);font-weight:700;color:var(--ink)}
   .course-head p{color:var(--ink-3);font-size:12.5px;width:100%;margin-top:4px}
-  /* 模块卡片 */
+
   section.module{
     background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
     padding:30px 30px 26px;margin-bottom:22px;box-shadow:var(--shadow);scroll-margin-top:76px;
@@ -243,7 +235,6 @@
   section.module:hover{border-color:var(--line-2)}
   .fade-up{animation:fadeUp .35s ease both}
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  /* 丝滑入场 */
   section.module.reveal{opacity:0;transform:translateY(16px)}
   section.module.reveal.in{animation:revealIn .55s cubic-bezier(.22,.61,.36,1) both}
   @keyframes revealIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -295,7 +286,7 @@
   .tags i{font-style:normal;font-size:12px;background:var(--green-soft);color:var(--green);padding:5px 12px;border-radius:999px}
   .tags i:nth-child(3n-1){background:var(--cyan-soft);color:var(--cyan)}
   .tags i:nth-child(3n){background:var(--gold-soft);color:var(--gold)}
-  /* 精简视图 */
+
   body.compact-view .full-only{display:none}
   body:not(.compact-view) .compact-only{display:none}
   body.compact-view section.module{padding:15px 17px;margin-bottom:12px}
@@ -307,7 +298,7 @@
   .compact-item p{font-size:13px;color:var(--ink-2);line-height:1.6}
   .compact-item .tags{margin-top:8px;padding-top:8px}
   .compact-item .tags i{font-size:12px;padding:4px 10px}
-  /* 总结 */
+
   .summary{background:linear-gradient(135deg,#14111d,#1d1628);border:1px solid var(--line);color:#ece9f3;border-radius:20px;padding:32px 30px;margin-top:30px}
   .summary h3{font-family:"Noto Serif SC",serif;font-size:21px;margin-bottom:20px}
   .summary .lesson{margin-bottom:20px}
@@ -321,12 +312,10 @@
   .back-top:hover{transform:translateY(-3px)}
   footer{position:relative;text-align:center;color:var(--ink-3);font-size:12.5px;padding:30px 0 40px;border-top:1px solid var(--line);margin-top:30px}
   footer .foot-author{position:absolute;right:2px;bottom:14px;font-size:11px;letter-spacing:.08em;color:var(--ink-3);opacity:.7}
-  /* ===== 响应式 ===== */
+
   @media (max-width:1023px){
-    /* 移动端关闭自定义滑块，恢复原生逻辑 */
     .custom-scroll-track{display:none;}
     .current-part-hint{display:none;}
-
     .layout{grid-template-columns:1fr}
     .topbar{display:flex}
     aside.sidebar{
@@ -369,13 +358,10 @@
 </style>
 </head>
 <body class="compact-view">
-<!-- 新增：顶部阅读进度条 -->
 <div class="top-progress-wrap">
   <div class="top-progress-bar"></div>
 </div>
-<!-- 新增：桌面端显示当前PART -->
 <div class="current-part-hint" id="currentPartHint"></div>
-<!-- 新增：自定义滚动滑块容器 -->
 <div class="custom-scroll-track">
   <div class="custom-scroll-thumb"></div>
 </div>
@@ -665,7 +651,6 @@ const summaries = [
     "趋势：艺术与科技、生活、商业深度融合，IP 打造和内容营销是未来关键。"
   ]}
 ];
-/* 未解锁目录（占位：仅视觉，点击不可查看） */
 const lockedModules = [
   "商业合作报价与谈单策略",
   "个人 IP 人设定位与记忆点",
@@ -683,7 +668,7 @@ const lockedModules = [
   "审美体系构建与风格沉淀",
   "长期品牌增长与变现复盘"
 ];
-/* ---------- 渲染 ---------- */
+
 const toc = document.getElementById("toc");
 const content = document.getElementById("content");
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
@@ -734,7 +719,6 @@ function render(){
     tocHtml += `</div></div>`;
     mainHtml += `</div>`;
   });
-  /* 未解锁目录分组（占位，点击回弹不可查看） */
   tocHtml += `<div class="toc-group toc-locked-group">
     <div class="toc-title"><span class="toc-badge toc-badge-locked">未解锁</span><span class="toc-cname">后续课程</span></div>
     <div class="toc-list">
@@ -748,7 +732,7 @@ function render(){
     <div class="lesson"><h4>${s.title}</h4><ul>${s.items.map(i=>`<li>${i}</li>`).join("")}</ul></div>
   `).join("");
 }
-/* ---------- 视图切换 ---------- */
+
 function switchView(v){
   document.body.classList.toggle("compact-view", v==="compact");
   document.querySelectorAll("[data-view]").forEach(btn=>{
@@ -758,7 +742,7 @@ function switchView(v){
 document.querySelectorAll("[data-view]").forEach(btn=>{
   btn.addEventListener("click", ()=>switchView(btn.dataset.view));
 });
-/* ---------- 目录跳转 + 抽屉 ---------- */
+
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("overlay");
 document.getElementById("burger").onclick = ()=>{sidebar.classList.add("open");overlay.classList.add("show")};
@@ -769,19 +753,18 @@ toc.addEventListener("click", e=>{
   e.preventDefault();
   if(a.classList.contains("locked")){ denyAccess(a); return; }
   const target = document.getElementById(a.dataset.id);
-  switchView("full"); // 跳转目录自动显示完整版知识点
+  switchView("full");
   sidebar.classList.remove("open");
   overlay.classList.remove("show");
   if(target){ setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}), 80); }
 });
-/* 无权限：回弹 + 抖动反馈，不跳转 */
 function denyAccess(a){
   a.classList.remove("denied"); void a.offsetWidth; a.classList.add("denied");
   const tip = a.querySelector(".lock-tag");
   if(tip){ tip.classList.add("flash"); setTimeout(()=>tip.classList.remove("flash"), 1200); }
   setTimeout(()=>a.classList.remove("denied"), 480);
 }
-/* ---------- 检索过滤 ---------- */
+
 const searchInput = document.getElementById("searchInput");
 const searchClear = document.getElementById("searchClear");
 function applyFilter(){
@@ -810,7 +793,7 @@ function applyFilter(){
 }
 searchInput.addEventListener("input", applyFilter);
 searchClear.onclick = ()=>{searchInput.value="";applyFilter();searchInput.focus()};
-/* ---------- 滚动高亮 ---------- */
+
 const spyLinks = ()=>[...toc.querySelectorAll("a")];
 const obs = new IntersectionObserver(entries=>{
   entries.forEach(en=>{
@@ -820,7 +803,7 @@ const obs = new IntersectionObserver(entries=>{
   });
 },{rootMargin:"-20% 0px -70% 0px"});
 function bindSpy(){document.querySelectorAll("section.module").forEach(s=>obs.observe(s))}
-/* 丝滑入场：进入视口后淡入上移，只触发一次 */
+
 const revealObs = new IntersectionObserver(entries=>{
   entries.forEach(en=>{
     if(en.isIntersecting){ en.target.classList.add("in"); revealObs.unobserve(en.target); }
@@ -829,15 +812,13 @@ const revealObs = new IntersectionObserver(entries=>{
 function bindReveal(){
   document.querySelectorAll("section.module").forEach(s=>{ s.classList.add("reveal"); revealObs.observe(s); });
 }
-/* ---------- 返回顶部 ---------- */
+
 const backTop = document.getElementById("backTop");
 window.addEventListener("scroll", ()=>{
   backTop.classList.toggle("show", window.scrollY > 500);
 });
 backTop.onclick = ()=>window.scrollTo({top:0,behavior:"smooth"});
 
-
-// =====================【新增全部自定义滚动滑块 + 顶部进度 + 当前PART逻辑】=====================
 const topProgressWrap = document.querySelector('.top-progress-wrap');
 const topProgressBar = document.querySelector('.top-progress-bar');
 const thumb = document.querySelector('.custom-scroll-thumb');
@@ -847,19 +828,35 @@ const currentPartHint = document.getElementById("currentPartHint");
 let hideTimer = null;
 let isDragging = false;
 
-// 更新进度条、滑块位置、当前PART文字
 function updateScrollUI(){
   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
   const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
   const percent = scrollHeight <= 0 ? 0 : scrollTop / scrollHeight;
 
-  //顶部阅读进度
   topProgressBar.style.width = `${percent*100}%`;
-
-  //自定义滑块位置
   const trackH = trackEl.clientHeight;
   const thumbH = thumb.clientHeight;
   const maxTop = trackH - thumbH;
   thumb.style.top = (percent * maxTop) + "px";
 
-  //识别当前所属
+  let showBadge = "";
+  document.querySelectorAll(".course").forEach(course=>{
+    const rect = course.getBoundingClientRect();
+    if(rect.top <= 200 && rect.bottom >= 200){
+      showBadge = course.dataset.badge;
+    }
+  });
+  if(showBadge){
+    currentPartHint.innerText = showBadge;
+    currentPartHint.classList.add("show");
+  }else{
+    currentPartHint.classList.remove("show");
+  }
+}
+
+function showScrollUI(){
+  topProgressWrap.classList.add('show');
+  thumb.classList.add('show');
+  clearTimeout(hideTimer);
+  if (!isDragging) {
+    hideTimer
